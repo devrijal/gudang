@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'customer.apps.CustomerConfig',
     'penerimaan_barang.apps.PenerimaanBarangConfig',
-    'pengeluaran_barang.apps.PengeluaranBarangConfig'
+    'pengeluaran_barang.apps.PengeluaranBarangConfig',
+    'home.apps.HomeConfig'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,9 @@ ROOT_URLCONF = 'gudang.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

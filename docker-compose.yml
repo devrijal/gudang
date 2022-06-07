@@ -19,7 +19,6 @@ services:
     build: 
       context: ./web
       dockerfile: Dockerfile
-    image: gudang:v1.0
     environment:
       - PORT=8000
     env_file:
