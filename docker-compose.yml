@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+  postgres_db:
+    container_name: postgres_db
+    image: postgres:14.3-alpine
+    env_file:
+      - web/.env
+    expose:
+      - 5432
+    # ports:
+    #   - "5432:5432"
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+  
+  web:
+    container_name: web
+    depends_on:
+      - postgres_db
+    build: 
+      context: ./web
+      dockerfile: Dockerfile
+    image: gudang:v1.0
+    environment:
+      - PORT=8000
+    env_file:
+      - web/.env
+    expose:
+      - 8000
+    volumes:
+      - ./web/:/app/
+      - staticfiles:/app/staticfiles
+      - mediafiles:/app/mediafiles
+    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && sh /app/entrypoint.sh"
+
+  nginx:
+    container_name: nginx
+    depends_on:
+      - web
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - staticfiles:/app/staticfiles
+      - mediafiles:/app/mediafiles
+
+volumes:
+  staticfiles:
+  mediafiles:
+  postgres_db:
